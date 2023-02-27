@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public abstract class SqliteHandler<T> extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.e(SqliteHandler.super.getClass().getSimpleName(), table.getCreateTableStmt());
         db.execSQL(table.getCreateTableStmt());
     }
 

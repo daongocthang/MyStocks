@@ -44,8 +44,8 @@ public class HistoryHandler extends SqliteHandler<Stock> {
         s.setId(curs.getInt(curs.getColumnIndex(COL_ID)));
         s.setSymbol(curs.getString(curs.getColumnIndex(COL_SYMBOL)));
         s.setPrice(curs.getDouble(curs.getColumnIndex(COL_PRICE)));
-        s.setShares(curs.getDouble(curs.getColumnIndex(COL_SHARES)));
-        s.setProfit(curs.getDouble(curs.getColumnIndex(COL_PROFIT)));
+        s.setShares(curs.getInt(curs.getColumnIndex(COL_SHARES)));
+        s.setProfit(curs.getInt(curs.getColumnIndex(COL_PROFIT)));
         s.setOrder(Stock.OrderType.valueOf(curs.getString(curs.getColumnIndex(COL_ORDER))));
         s.setDate(curs.getString(curs.getColumnIndex(COL_DATE)));
         return s;
@@ -55,11 +55,10 @@ public class HistoryHandler extends SqliteHandler<Stock> {
     public ContentValues convertToContentValues(Stock s) {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         ContentValues cv = new ContentValues();
-        cv.put(COL_ID, s.getId());
         cv.put(COL_SYMBOL, s.getSymbol());
         cv.put(COL_PRICE, s.getPrice());
         cv.put(COL_SHARES, s.getShares());
-        cv.put(COL_SHARES, s.getProfit());
+        cv.put(COL_PROFIT, s.getProfit());
         cv.put(COL_ORDER, s.getOrder().toString());
         cv.put(COL_DATE, today);
         return cv;

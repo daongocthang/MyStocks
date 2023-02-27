@@ -3,8 +3,6 @@ package com.standalone.mystocks.adapters.helpers;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -30,8 +28,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        final int position = viewHolder.getAbsoluteAdapterPosition();
-        // Edit Item
+        final int position = viewHolder.getAdapterPosition();
         adapter.updateItem(position);
     }
 
@@ -39,24 +36,16 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-        Drawable icon = null;
-        ColorDrawable background = null;
-
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
 
         // Initialize icon and background
-        if (dX < 0) {
-            // Swiping left
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_sell);
-            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.danger_dark));
-        } else {
-            return;
-        }
+        Drawable icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_sell);
+        ColorDrawable background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.danger_dark));
 
-        // align icon
+
+        // Align icon
         assert icon != null;
-
         int icMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
         int icTop = itemView.getTop() + icMargin;
         int icBottom = icTop + icon.getIntrinsicHeight();

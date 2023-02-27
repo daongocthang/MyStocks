@@ -16,6 +16,7 @@ import com.standalone.mystocks.adapters.AssetAdapter;
 import com.standalone.mystocks.adapters.helpers.RecyclerItemTouchHelper;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.AssetHandler;
+import com.standalone.mystocks.handlers.HistoryHandler;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 

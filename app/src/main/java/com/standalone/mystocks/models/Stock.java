@@ -8,8 +8,8 @@ public class Stock implements Serializable {
     int id;
     String symbol;
     double price;
-    double shares;
-    double profit;
+    int shares;
+    int profit;
     OrderType order;
     String date;
 
@@ -37,19 +37,19 @@ public class Stock implements Serializable {
         this.price = price;
     }
 
-    public double getShares() {
+    public int getShares() {
         return shares;
     }
 
-    public void setShares(double shares) {
+    public void setShares(int shares) {
         this.shares = shares;
     }
 
-    public double getProfit() {
+    public int getProfit() {
         return profit;
     }
 
-    public void setProfit(double profit) {
+    public void setProfit(int profit) {
         this.profit = profit;
     }
 
@@ -69,7 +69,7 @@ public class Stock implements Serializable {
         this.order = order;
     }
 
-    public double getAmount() {
-        return price * shares;
+    public int getAmount() {
+        return (int) (price * shares);
     }
 }

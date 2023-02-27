@@ -35,14 +35,13 @@ public class AssetHandler extends SqliteHandler<Stock> {
         s.setId(curs.getInt(curs.getColumnIndex(COL_ID)));
         s.setSymbol(curs.getString(curs.getColumnIndex(COL_SYMBOL)));
         s.setPrice(curs.getDouble(curs.getColumnIndex(COL_PRICE)));
-        s.setShares(curs.getDouble(curs.getColumnIndex(COL_SHARES)));
+        s.setShares(curs.getInt(curs.getColumnIndex(COL_SHARES)));
         return s;
     }
 
     @Override
     public ContentValues convertToContentValues(Stock s) {
         ContentValues cv = new ContentValues();
-        cv.put(COL_ID, s.getId());
         cv.put(COL_SYMBOL, s.getSymbol());
         cv.put(COL_PRICE, s.getPrice());
         cv.put(COL_SHARES, s.getShares());

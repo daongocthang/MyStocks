@@ -27,6 +27,7 @@ import com.standalone.mystocks.handlers.HistoryHandler;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class TradeDialogFragment extends BottomSheetDialogFragment {
@@ -118,18 +119,18 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             return;
         }
 
-        String inputSymbol = edSymbol.getText().toString();
+        String inputSymbol = edSymbol.getText().toString().toUpperCase();
 
-        double inputPrice = 0;
+        double inputPrice;
         try {
             inputPrice = Double.parseDouble(edPrice.getText().toString());
         } catch (NumberFormatException e) {
             inputPrice = 0.0;
         }
 
-        double inputShares = 0;
+        int inputShares;
         try {
-            inputShares = Double.parseDouble(edShares.getText().toString());
+            inputShares = Integer.parseInt(edShares.getText().toString());
         } catch (NumberFormatException e) {
             inputShares = 0;
         }
@@ -137,14 +138,14 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         if (isUpdate) {
             // Check if out of range
             Stock s = referenceStock;
-            double remainingShares = inputShares - s.getShares();
+            int remainingShares = s.getShares() - inputShares;
             if (remainingShares < 0) {
                 edShares.setError(ErrorMessages.INVALID);
                 return;
             }
 
             s.setShares(inputShares);
-            s.setProfit(inputPrice - s.getPrice());
+            s.setProfit((int) ((inputPrice - s.getPrice()) * inputShares));
             s.setOrder(Stock.OrderType.SELL);
 
             historyHandler.insert(s);
