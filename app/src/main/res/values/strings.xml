@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Stocks</string>
+    <string name="sample_word">AAA</string>
+    <string name="sample_digit">99.9</string>
+    <string name="lbl_symbol">Symbol</string>
+    <string name="lbl_amount">Amount</string>
+    <string name="lbl_price">Price</string>
+    <string name="lbl_shares">Shares</string>
+    <string name="lbl_submit">Submit</string>
+    <string name="hint_clear">Clear</string>
+    <string name="content_description">Enter How Much Cookies You Want</string>
+</resources>
