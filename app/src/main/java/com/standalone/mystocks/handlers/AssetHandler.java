@@ -5,10 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.standalone.mystocks.handlers.generic.SqliteHandler;
+import com.standalone.mystocks.handlers.generic.TableHelper;
 import com.standalone.mystocks.models.Stock;
 
-public class AssetHandler extends SqliteHandler<Stock> {
+public class AssetHandler extends TableHelper<Stock> {
     static final int VERSION = 1;
     static final String DB_NAME = "db_mystocks";
     static final String TBL_NAME = "tbl_asset";

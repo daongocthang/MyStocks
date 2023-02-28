@@ -1,40 +1,32 @@
 package com.standalone.mystocks.handlers.generic;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SqliteHandler<T> extends SQLiteOpenHelper {
+public abstract class TableHelper<T> {
     protected String dbName;
     protected MetaTable table;
     protected SQLiteDatabase db;
 
 
-    public SqliteHandler(Context context, String dbName, MetaTable metaTable, int Version) {
-        super(context, dbName, null, Version);
+    public TableHelper(String dbName, MetaTable metaTable) {
         this.table = metaTable;
         this.dbName = dbName;
     }
 
-    @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.e(SqliteHandler.super.getClass().getSimpleName(), table.getCreateTableStmt());
         db.execSQL(table.getCreateTableStmt());
     }
 
-    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(table.getDropTableStmt());
         onCreate(db);
     }
 
-    @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
