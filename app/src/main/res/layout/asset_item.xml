@@ -12,40 +12,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
+
         <TextView
-            android:id="@+id/assetItemSymbol"
+            android:id="@+id/itemSymbol"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/sample_word"
             android:textColor="@color/primary_dark"
             android:textSize="20sp" />
+
         <TextView
-            android:id="@+id/assetItemPrice"
+            android:id="@+id/itemPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
             android:text="@string/sample_digit"
+            android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <TextView
-            android:id="@+id/assetItemShares"
+            android:id="@+id/itemShares"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
             android:text="@string/sample_digit"
+            android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <TextView
-            android:id="@+id/assetItemAmount"
+            android:id="@+id/itemStopLoss"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
             android:text="@string/sample_digit"
-            android:textColor="@color/black"
+            android:textAlignment="textEnd"
+            android:textColor="@color/danger_dark"
             android:textSize="18sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>

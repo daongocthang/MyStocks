@@ -7,32 +7,22 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TableHelper<T> {
+public abstract class SqliteTableHandler<T> implements SqliteHandler {
     protected String dbName;
     protected MetaTable table;
     protected SQLiteDatabase db;
 
-
-    public TableHelper(String dbName, MetaTable metaTable) {
+    public SqliteTableHandler(OpenDB openDB, String dbName, MetaTable metaTable) {
         this.table = metaTable;
         this.dbName = dbName;
+
+        openDB.addSqliteTable(this);
     }
 
-    public void onCreate(SQLiteDatabase db) {
+    @Override
+    public void open(SQLiteDatabase db) {
+        this.db = db;
         db.execSQL(table.getCreateTableStmt());
-    }
-
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(table.getDropTableStmt());
-        onCreate(db);
-    }
-
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
-    }
-
-    public void openDb() {
-        db = this.getWritableDatabase();
     }
 
     public abstract T cursorToData(Cursor cursor);
@@ -70,7 +60,7 @@ public abstract class TableHelper<T> {
         }
 
         public String getCreateTableStmt() {
-            return "CREATE TABLE " + tableName + "(" + String.join(", ", colDefinitions) + ");";
+            return "CREATE TABLE IF NOT EXISTS " + tableName + "(" + String.join(", ", colDefinitions) + ");";
         }
 
         public String getDropTableStmt() {

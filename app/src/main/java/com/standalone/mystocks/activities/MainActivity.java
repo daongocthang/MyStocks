@@ -14,9 +14,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.AssetAdapter;
 import com.standalone.mystocks.adapters.helpers.RecyclerItemTouchHelper;
+import com.standalone.mystocks.constant.Config;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
-import com.standalone.mystocks.handlers.AssetHandler;
-import com.standalone.mystocks.handlers.HistoryHandler;
+import com.standalone.mystocks.handlers.AssetTableHandler;
+import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 
@@ -25,15 +26,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
     private AssetAdapter adapter;
-    private AssetHandler db;
+    private AssetTableHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new AssetHandler(this);
-        db.openDb();
+        OpenDB openDB = new OpenDB(this, Config.DATABASE_NAME, Config.VERSION);
+        db = new AssetTableHandler(openDB);
+        openDB.init();
 
         RecyclerView assetRecyclerView = findViewById(R.id.assetRecyclerView);
         assetRecyclerView.setLayoutManager(new LinearLayoutManager(this));

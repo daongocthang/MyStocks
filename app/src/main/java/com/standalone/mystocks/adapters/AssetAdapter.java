@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
+import com.standalone.mystocks.constant.Config;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
-import com.standalone.mystocks.handlers.AssetHandler;
+import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
 
 import java.util.List;
@@ -23,9 +24,9 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
 
     private List<Stock> stocks;
     private final MainActivity activity;
-    private final AssetHandler db;
+    private final AssetTableHandler db;
 
-    public AssetAdapter(AssetHandler db, MainActivity activity) {
+    public AssetAdapter(AssetTableHandler db, MainActivity activity) {
         this.activity = activity;
         this.db = db;
     }
@@ -40,13 +41,13 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        db.openDb();
-        final Stock item = stocks.get(position);
+        final Stock s = stocks.get(position);
+        double stopLoss = s.getPrice() * (1 - Config.STOP_LOSS_RATE);
 
-        holder.tvSymbol.setText(item.getSymbol());
-        holder.tvPrice.setText(String.valueOf(item.getPrice()));
-        holder.tvShares.setText(String.valueOf(item.getShares()));
-        holder.tvAmount.setText(String.valueOf(item.getAmount()));
+        holder.tvSymbol.setText(s.getSymbol());
+        holder.tvPrice.setText(String.valueOf(s.getPrice()));
+        holder.tvShares.setText(String.valueOf(s.getShares()));
+        holder.tvStopLoss.setText(String.valueOf(stopLoss));
     }
 
     @Override
@@ -86,14 +87,14 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         TextView tvSymbol;
         TextView tvPrice;
         TextView tvShares;
-        TextView tvAmount;
+        TextView tvStopLoss;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvSymbol = itemView.findViewById(R.id.assetItemSymbol);
-            tvPrice = itemView.findViewById(R.id.assetItemPrice);
-            tvShares = itemView.findViewById(R.id.assetItemShares);
-            tvAmount = itemView.findViewById(R.id.assetItemAmount);
+            tvSymbol = itemView.findViewById(R.id.itemSymbol);
+            tvPrice = itemView.findViewById(R.id.itemPrice);
+            tvShares = itemView.findViewById(R.id.itemShares);
+            tvStopLoss = itemView.findViewById(R.id.itemStopLoss);
 
         }
     }

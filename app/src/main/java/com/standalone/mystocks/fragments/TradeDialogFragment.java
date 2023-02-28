@@ -21,13 +21,14 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.standalone.mystocks.R;
+import com.standalone.mystocks.constant.Config;
 import com.standalone.mystocks.constant.ErrorMessages;
-import com.standalone.mystocks.handlers.AssetHandler;
-import com.standalone.mystocks.handlers.HistoryHandler;
+import com.standalone.mystocks.handlers.AssetTableHandler;
+import com.standalone.mystocks.handlers.HistoryTableHandler;
+import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 
-import java.util.Locale;
 import java.util.Objects;
 
 public class TradeDialogFragment extends BottomSheetDialogFragment {
@@ -37,8 +38,8 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
     private EditText edPrice;
 
     private Stock referenceStock;
-    private AssetHandler assetHandler;
-    private HistoryHandler historyHandler;
+    private AssetTableHandler assetTableHandler;
+    private HistoryTableHandler historyTableHandler;
 
 
     @Override
@@ -76,7 +77,7 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         final Bundle bundle = getArguments();
         if (bundle != null) {
             btSubmit.setText(Stock.OrderType.SELL.toString());
-            btSubmit.setBackgroundResource(R.color.danger);
+            btSubmit.setBackgroundResource(R.color.danger_dark);
             isUpdate = true;
             Stock s = (Stock) bundle.get("stock");
             assert s != null;
@@ -89,11 +90,11 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             edSymbol.requestFocus();
         }
 
-        assetHandler = new AssetHandler(getActivity());
-        historyHandler = new HistoryHandler(getActivity());
+        OpenDB openDB = new OpenDB(getActivity(), Config.DATABASE_NAME, Config.VERSION);
+        assetTableHandler = new AssetTableHandler(openDB);
+        historyTableHandler = new HistoryTableHandler(openDB);
 
-        assetHandler.openDb();
-        historyHandler.openDb();
+        openDB.init();
 
         final boolean finalIsUpdate = isUpdate;
         btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -139,21 +140,25 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             // Check if out of range
             Stock s = referenceStock;
             int remainingShares = s.getShares() - inputShares;
+            double matchedPrice = s.getPrice();
+
             if (remainingShares < 0) {
                 edShares.setError(ErrorMessages.INVALID);
                 return;
             }
 
             s.setShares(inputShares);
-            s.setProfit((int) ((inputPrice - s.getPrice()) * inputShares));
+            s.setProfit((int) ((inputPrice - matchedPrice) * inputShares));
+            s.setPrice(inputPrice);
             s.setOrder(Stock.OrderType.SELL);
 
-            historyHandler.insert(s);
+            historyTableHandler.insert(s);
             if (remainingShares == 0) {
-                assetHandler.remove(s.getId());
+                assetTableHandler.remove(s.getId());
             } else {
                 s.setShares(remainingShares);
-                assetHandler.update(s);
+                s.setPrice(matchedPrice);
+                assetTableHandler.update(s);
             }
         } else {
             Stock s = new Stock();
@@ -163,8 +168,8 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             s.setOrder(Stock.OrderType.BUY);
             s.setProfit(0);
 
-            historyHandler.insert(s);
-            assetHandler.insert(s);
+            historyTableHandler.insert(s);
+            assetTableHandler.insert(s);
         }
 
         dismiss();

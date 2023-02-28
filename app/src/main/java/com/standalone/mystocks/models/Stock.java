@@ -69,7 +69,4 @@ public class Stock implements Serializable {
         this.order = order;
     }
 
-    public int getAmount() {
-        return (int) (price * shares);
-    }
 }
