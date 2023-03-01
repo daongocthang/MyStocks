@@ -148,7 +148,7 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             }
 
             s.setShares(inputShares);
-            s.setProfit((int) ((inputPrice - matchedPrice) * inputShares));
+            s.setProfit((inputPrice - matchedPrice) * inputShares);
             s.setPrice(inputPrice);
             s.setOrder(Stock.OrderType.SELL);
 

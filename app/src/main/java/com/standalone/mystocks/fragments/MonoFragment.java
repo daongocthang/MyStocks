@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.standalone.mystocks.interfaces.DialogCloseListener;
+import com.standalone.mystocks.interfaces.DataSetUpdateListener;
 
-public abstract class MonoFragment extends Fragment implements DialogCloseListener {
+public abstract class MonoFragment extends Fragment implements DataSetUpdateListener {
 
     protected final int resource;
 

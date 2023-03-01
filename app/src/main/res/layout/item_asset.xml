@@ -22,6 +22,7 @@
             android:textColor="@color/primary_dark"
             android:textSize="20sp" />
 
+
         <TextView
             android:id="@+id/elAssetPrice"
             android:layout_width="0dp"
@@ -51,5 +52,13 @@
             android:textAlignment="textEnd"
             android:textColor="@color/danger_dark"
             android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/btAssetSell"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_money" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>

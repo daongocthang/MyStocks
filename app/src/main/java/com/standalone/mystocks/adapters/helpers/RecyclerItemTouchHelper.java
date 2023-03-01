@@ -28,7 +28,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        final int position = viewHolder.getAdapterPosition();
+        final int position = viewHolder.getAbsoluteAdapterPosition();
         adapter.updateItem(position);
     }
 
@@ -40,7 +40,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         int backgroundCornerOffset = 20;
 
         // Initialize icon and background
-        Drawable icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_sell);
+        Drawable icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_money);
         ColorDrawable background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.danger_dark));
 
 

@@ -1,6 +1,7 @@
 package com.standalone.mystocks.activities;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,12 +15,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
+import com.standalone.mystocks.interfaces.DataSetUpdateListener;
+import com.standalone.mystocks.interfaces.DialogCloseListener;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements DialogCloseListener {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPagerAdapter adapter;
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -68,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshAllPages(){
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        for (Fragment f : fragmentList) {
+            if (f instanceof DataSetUpdateListener) {
+                ((DataSetUpdateListener) f).handleDataSetUpdate();
+            }
+        }
     }
 }

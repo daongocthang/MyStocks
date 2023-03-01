@@ -10,6 +10,7 @@
     <string name="price">Price</string>
     <string name="shares">Shares</string>
     <string name="order">Order</string>
+    <string name="action">Action</string>
     <string name="stop_loss">StopLoss</string>
     <string name="profit">Profit</string>
     <string name="submit">Submit</string>

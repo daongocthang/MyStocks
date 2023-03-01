@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.standalone.mystocks.constant.Config;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
+import com.standalone.mystocks.utils.Humanize;
 
 import java.util.List;
 
@@ -44,10 +46,18 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         final Stock s = itemList.get(position);
         double stopLoss = s.getPrice() * (1 - Config.STOP_LOSS_RATE);
 
+        final int finalPosition = position;
+        holder.btOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateItem(finalPosition);
+            }
+        });
+
         holder.tvSymbol.setText(s.getSymbol());
-        holder.tvPrice.setText(String.valueOf(s.getPrice()));
-        holder.tvShares.setText(String.valueOf(s.getShares()));
-        holder.tvStopLoss.setText(String.valueOf(stopLoss));
+        holder.tvPrice.setText(Humanize.doubleComma(s.getPrice()));
+        holder.tvShares.setText(Humanize.intComma(s.getShares()));
+        holder.tvStopLoss.setText(Humanize.doubleComma(stopLoss));
     }
 
     @Override
@@ -88,14 +98,16 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         TextView tvPrice;
         TextView tvShares;
         TextView tvStopLoss;
+        ImageButton btOrder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             tvSymbol = itemView.findViewById(R.id.elAssetSymbol);
             tvPrice = itemView.findViewById(R.id.elAssetPrice);
             tvShares = itemView.findViewById(R.id.elAssetShares);
             tvStopLoss = itemView.findViewById(R.id.elAssetStopLoss);
-
+            btOrder = itemView.findViewById(R.id.btAssetSell);
         }
     }
 }

@@ -15,6 +15,7 @@ import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.constant.Config;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
+import com.standalone.mystocks.utils.Humanize;
 
 import java.util.List;
 
@@ -41,18 +42,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         final Stock s = itemList.get(position);
 
         holder.tvSymbol.setText(s.getSymbol());
-        holder.tvPrice.setText(String.valueOf(s.getPrice()));
-        holder.tvShares.setText(String.valueOf(s.getShares()));
+        holder.tvPrice.setText(Humanize.doubleComma(s.getPrice()));
+        holder.tvShares.setText(Humanize.intComma(s.getShares()));
         Stock.OrderType orderType = s.getOrder();
 
-        if (orderType.equals(Stock.OrderType.BUY))
-            holder.tvOrder.setTextColor(R.color.primary);
         holder.tvOrder.setText(orderType.toString());
-
-        if (s.getProfit() > 0)
-            holder.tvProfit.setTextColor(R.color.primary);
-        holder.tvProfit.setText(String.valueOf(s.getProfit()));
-
+        if (orderType.equals(Stock.OrderType.BUY)) {
+            holder.tvOrder.setTextColor(R.color.primary);
+            holder.tvProfit.setText("");
+        } else {
+            holder.tvProfit.setText(Humanize.doubleComma(s.getProfit()));
+            if (s.getProfit() > 0) {
+                holder.tvProfit.setTextColor(R.color.primary);
+            }
+        }
     }
 
     @Override

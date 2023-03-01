@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -58,8 +59,8 @@ public class AssetFragment extends MonoFragment {
         adapter = new AssetAdapter(activity, db);
         assetRecyclerView.setAdapter(adapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(adapter));
-        itemTouchHelper.attachToRecyclerView(assetRecyclerView);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(adapter));
+//        itemTouchHelper.attachToRecyclerView(assetRecyclerView);
 
         List<Stock> stocks = db.fetchAll();
         Collections.reverse(stocks);
@@ -67,7 +68,8 @@ public class AssetFragment extends MonoFragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void handleDialogClose(DialogInterface dialog) {
+    @Override
+    public void handleDataSetUpdate() {
         List<Stock> stocks = db.fetchAll();
         Collections.reverse(stocks);
 
@@ -75,5 +77,4 @@ public class AssetFragment extends MonoFragment {
         adapter.setItemList(stocks);
         adapter.notifyDataSetChanged();
     }
-
 }
