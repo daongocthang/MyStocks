@@ -2,7 +2,6 @@ package com.standalone.mystocks.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,47 +13,52 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.constant.Config;
-import com.standalone.mystocks.fragments.TradeDialogFragment;
-import com.standalone.mystocks.handlers.AssetTableHandler;
+import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
 
 import java.util.List;
 
-public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private List<Stock> itemList;
     private final MainActivity activity;
-    private final AssetTableHandler db;
 
-    public AssetAdapter(MainActivity activity, AssetTableHandler db) {
+    public HistoryAdapter(MainActivity activity) {
         this.activity = activity;
-        this.db = db;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_asset, parent, false);
-        return new ViewHolder(itemView);
+                .inflate(R.layout.item_history, parent, false);
+        return new HistoryAdapter.ViewHolder(itemView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Stock s = itemList.get(position);
-        double stopLoss = s.getPrice() * (1 - Config.STOP_LOSS_RATE);
 
         holder.tvSymbol.setText(s.getSymbol());
         holder.tvPrice.setText(String.valueOf(s.getPrice()));
         holder.tvShares.setText(String.valueOf(s.getShares()));
-        holder.tvStopLoss.setText(String.valueOf(stopLoss));
+        Stock.OrderType orderType = s.getOrder();
+
+        if (orderType.equals(Stock.OrderType.BUY))
+            holder.tvOrder.setTextColor(R.color.primary);
+        holder.tvOrder.setText(orderType.toString());
+
+        if (s.getProfit() > 0)
+            holder.tvProfit.setTextColor(R.color.primary);
+        holder.tvProfit.setText(String.valueOf(s.getProfit()));
+
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
     }
-
 
     public Context getContext() {
         return activity;
@@ -66,36 +70,21 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void removeItem(int pos) {
-        Stock s = itemList.get(pos);
-        db.remove(s.getId());
-        itemList.remove(pos);
-        notifyItemRemoved(pos);
-    }
-
-    public void updateItem(int pos) {
-        Stock s = itemList.get(pos);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("stock", s);
-        // Show a dialog fragment
-        TradeDialogFragment fragment = new TradeDialogFragment();
-        fragment.setArguments(bundle);
-        fragment.show(activity.getSupportFragmentManager(), TradeDialogFragment.TAG);
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvSymbol;
         TextView tvPrice;
         TextView tvShares;
-        TextView tvStopLoss;
+        TextView tvOrder;
+        TextView tvProfit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvSymbol = itemView.findViewById(R.id.elAssetSymbol);
-            tvPrice = itemView.findViewById(R.id.elAssetPrice);
-            tvShares = itemView.findViewById(R.id.elAssetShares);
-            tvStopLoss = itemView.findViewById(R.id.elAssetStopLoss);
 
+            tvSymbol = itemView.findViewById(R.id.elHistorySymbol);
+            tvPrice = itemView.findViewById(R.id.elHistoryPrice);
+            tvShares = itemView.findViewById(R.id.elHistoryShares);
+            tvOrder = itemView.findViewById(R.id.elHistoryOrder);
+            tvProfit = itemView.findViewById(R.id.elHistoryProfit);
         }
     }
 }

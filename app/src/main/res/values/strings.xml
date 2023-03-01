@@ -2,12 +2,18 @@
     <string name="app_name">My Stocks</string>
     <string name="sample_word">AAA</string>
     <string name="sample_digit">99.9</string>
-    <string name="lbl_symbol">Symbol</string>
-    <string name="lbl_amount">Amount</string>
-    <string name="lbl_price">Price</string>
-    <string name="lbl_shares">Shares</string>
-    <string name="lbl_stop_loss">StopLoss</string>
-    <string name="lbl_submit">Submit</string>
+    <string name="asset">Asset</string>
+    <string name="history">History</string>
+    <string name="report">Report</string>
+    <string name="symbol">Symbol</string>
+    <string name="amount">Amount</string>
+    <string name="price">Price</string>
+    <string name="shares">Shares</string>
+    <string name="order">Order</string>
+    <string name="stop_loss">StopLoss</string>
+    <string name="profit">Profit</string>
+    <string name="submit">Submit</string>
     <string name="hint_clear">Clear</string>
-    <string name="content_description">Enter How Much Cookies You Want</string>
+    <string name="hint_fab">Order</string>
+    <string name="under_construction">Under Construction</string>
 </resources>

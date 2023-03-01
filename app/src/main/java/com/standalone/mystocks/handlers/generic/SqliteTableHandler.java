@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SqliteTableHandler<T> implements SqliteHandler {
+public abstract class SqliteTableHandler<T> implements SqliteOpener {
     protected String dbName;
     protected MetaTable table;
     protected SQLiteDatabase db;

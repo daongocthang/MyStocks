@@ -1,57 +1,34 @@
 package com.standalone.mystocks.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
-import com.standalone.mystocks.adapters.AssetAdapter;
-import com.standalone.mystocks.adapters.helpers.RecyclerItemTouchHelper;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.adapters.ViewPagerAdapter;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
-import com.standalone.mystocks.handlers.AssetTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
-import com.standalone.mystocks.interfaces.DialogCloseListener;
-import com.standalone.mystocks.models.Stock;
 
-import java.util.Collections;
-import java.util.List;
+public class MainActivity extends AppCompatActivity {
+    TabLayout tabLayout;
+    ViewPager2 viewPager2;
+    ViewPagerAdapter adapter;
 
-public class MainActivity extends AppCompatActivity implements DialogCloseListener {
-    private AssetAdapter adapter;
-    private AssetTableHandler db;
 
+
+    @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        OpenDB openDB = new OpenDB(this, Config.DATABASE_NAME, Config.VERSION);
-        db = new AssetTableHandler(openDB);
-        openDB.init();
-
-        RecyclerView assetRecyclerView = findViewById(R.id.assetRecyclerView);
-        assetRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new AssetAdapter(db, this);
-        assetRecyclerView.setAdapter(adapter);
+        setContentView(R.layout.acitivity_main);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(adapter));
-        itemTouchHelper.attachToRecyclerView(assetRecyclerView);
-
-        List<Stock> stocks = db.fetchAll();
-        Collections.reverse(stocks);
-        adapter.setAsset(stocks);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,26 +36,38 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
 
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager2 = findViewById(R.id.pager);
+        adapter = new ViewPagerAdapter(this);
+        viewPager2.setAdapter(adapter);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                TabLayout.Tab tab = tabLayout.getTabAt(position);
+                assert tab != null;
+                tab.select();
+            }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        reloadAdapter();
-    }
-
-    @Override
-    public void handleDialogClose(DialogInterface dialog) {
-        reloadAdapter();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void reloadAdapter() {
-        List<Stock> stocks = db.fetchAll();
-        Collections.reverse(stocks);
-
-        // Display default row from db
-        adapter.setAsset(stocks);
-        adapter.notifyDataSetChanged();
+    public void refreshAllPages(){
     }
 }

@@ -5,14 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OpenDB extends SQLiteOpenHelper {
 
-    private final List<SqliteHandler> sqliteHelperList;
+    private final List<SqliteOpener> sqliteHelperList;
 
     public OpenDB(Context context, String dbName, int version) {
         super(context, dbName, null, version);
@@ -21,7 +20,7 @@ public class OpenDB extends SQLiteOpenHelper {
 
     public void init() {
         SQLiteDatabase db = getWritableDatabase();
-        for (SqliteHandler helper : sqliteHelperList) {
+        for (SqliteOpener helper : sqliteHelperList) {
             helper.open(db);
         }
     }
@@ -42,7 +41,7 @@ public class OpenDB extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void addSqliteTable(SqliteHandler helper) {
+    public void addSqliteTable(SqliteOpener helper) {
         sqliteHelperList.add(helper);
     }
 

@@ -2,6 +2,6 @@ package com.standalone.mystocks.handlers.generic;
 
 import android.database.sqlite.SQLiteDatabase;
 
-public interface SqliteHandler {
+public interface SqliteOpener {
     public void open(SQLiteDatabase db);
 }
