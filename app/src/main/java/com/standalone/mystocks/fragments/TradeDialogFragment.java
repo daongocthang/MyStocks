@@ -1,6 +1,8 @@
 package com.standalone.mystocks.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,8 +15,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +33,10 @@ import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class TradeDialogFragment extends BottomSheetDialogFragment {
@@ -36,6 +44,8 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
     private EditText edSymbol;
     private EditText edShares;
     private EditText edPrice;
+
+    private TextView tvDate;
 
     private Stock referenceStock;
     private AssetTableHandler assetTableHandler;
@@ -66,13 +76,26 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         edSymbol = view.findViewById(R.id.edSymbol);
         edPrice = view.findViewById(R.id.edPrice);
         edShares = view.findViewById(R.id.edShares);
+        tvDate = view.findViewById(R.id.tvDate);
+
         Button btSubmit = view.findViewById(R.id.btSubmit);
+        ImageButton btDatePicker = view.findViewById(R.id.imDatePicker);
 
         addCancelButton(edSymbol, R.id.imSymbol);
         addCancelButton(edPrice, R.id.imPrice);
         addCancelButton(edShares, R.id.imShares);
 
+        btDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
+
         // Fill fields if exists
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        tvDate.setText(today);
+
         boolean isUpdate = false;
         final Bundle bundle = getArguments();
         if (bundle != null) {
@@ -94,7 +117,6 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         assetTableHandler = new AssetTableHandler(openDB);
         historyTableHandler = new HistoryTableHandler(openDB);
 
-        openDB.init();
 
         final boolean finalIsUpdate = isUpdate;
         btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +173,7 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             s.setProfit((inputPrice - matchedPrice) * inputShares);
             s.setPrice(inputPrice);
             s.setOrder(Stock.OrderType.SELL);
+            s.setDate(tvDate.getText().toString());
 
             historyTableHandler.insert(s);
             if (remainingShares == 0) {
@@ -167,6 +190,7 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             s.setShares(inputShares);
             s.setOrder(Stock.OrderType.BUY);
             s.setProfit(0);
+            s.setDate(tvDate.getText().toString());
 
             historyTableHandler.insert(s);
             assetTableHandler.insert(s);
@@ -189,6 +213,25 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         super.onCancel(dialog);
         Log.e(TAG, "Dismiss when pressing outside");
         dismiss();
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                String[] strDate = new String[3];
+                strDate[0] = String.format(Locale.US, "%02d", year);
+                strDate[1] = String.format(Locale.US, "%02d", month+1);
+                ;
+                strDate[2] = String.format(Locale.US, "%02d", day);
+                ;
+
+                tvDate.setText(String.join("-", strDate));
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show();
     }
 
     private void addCancelButton(EditText edt, int id) {

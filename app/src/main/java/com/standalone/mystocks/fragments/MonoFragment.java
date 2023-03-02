@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.standalone.mystocks.interfaces.DataSetUpdateListener;
+import com.standalone.mystocks.interfaces.AdapterUpdateListener;
 
-public abstract class MonoFragment extends Fragment implements DataSetUpdateListener {
+public abstract class MonoFragment extends Fragment implements AdapterUpdateListener {
 
     protected final int resource;
 

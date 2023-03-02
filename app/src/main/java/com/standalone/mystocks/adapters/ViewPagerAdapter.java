@@ -32,7 +32,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new HistoryFragment(activity);
             case 2:
-                return new ReportFragment();
+                return new ReportFragment(activity);
             default:
                 return new AssetFragment(activity);
         }

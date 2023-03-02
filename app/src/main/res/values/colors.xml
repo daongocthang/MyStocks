@@ -18,4 +18,6 @@
     <color name="success">#00c851</color>
     <color name="warning">#ffbb33</color>
     <color name="warning_dark">#ff8800</color>
+    <color name="secondary">#6c757d</color>
+
 </resources>

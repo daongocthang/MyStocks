@@ -6,25 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OpenDB extends SQLiteOpenHelper {
-
-    private final List<SqliteOpener> sqliteHelperList;
+    private final SQLiteDatabase db;
 
     public OpenDB(Context context, String dbName, int version) {
         super(context, dbName, null, version);
-        sqliteHelperList = new ArrayList<>();
+        db = getWritableDatabase();
     }
-
-    public void init() {
-        SQLiteDatabase db = getWritableDatabase();
-        for (SqliteOpener helper : sqliteHelperList) {
-            helper.open(db);
-        }
-    }
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -41,8 +29,8 @@ public class OpenDB extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void addSqliteTable(SqliteOpener helper) {
-        sqliteHelperList.add(helper);
+    public void assign(SqliteOpener opener) {
+        opener.open(db);
     }
 
     @SuppressLint("Range")

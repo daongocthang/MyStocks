@@ -51,7 +51,6 @@ public class AssetFragment extends MonoFragment {
 
         OpenDB openDB = new OpenDB(activity, Config.DATABASE_NAME, Config.VERSION);
         db = new AssetTableHandler(openDB);
-        openDB.init();
 
         RecyclerView assetRecyclerView = view.findViewById(R.id.assetRecyclerView);
         assetRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -66,10 +65,9 @@ public class AssetFragment extends MonoFragment {
         Collections.reverse(stocks);
         adapter.setItemList(stocks);
     }
-
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void handleDataSetUpdate() {
+    public void onUpdate() {
         List<Stock> stocks = db.fetchAll();
         Collections.reverse(stocks);
 

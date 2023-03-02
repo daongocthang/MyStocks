@@ -16,7 +16,7 @@ public abstract class SqliteTableHandler<T> implements SqliteOpener {
         this.table = metaTable;
         this.dbName = dbName;
 
-        openDB.addSqliteTable(this);
+        openDB.assign(this);
     }
 
     @Override

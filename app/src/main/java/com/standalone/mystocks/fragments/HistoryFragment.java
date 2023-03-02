@@ -30,9 +30,18 @@ public class HistoryFragment extends MonoFragment {
     private HistoryTableHandler db;
     private HistoryAdapter adapter;
 
+    private Comparator<Stock> comparator;
+
     public HistoryFragment(MainActivity activity) {
         super(R.layout.fragment_history);
         this.activity = activity;
+
+        comparator = new Comparator<Stock>() {
+            @Override
+            public int compare(Stock s1, Stock s2) {
+                return s2.getDate().compareTo(s1.getDate());
+            }
+        };
     }
 
     @Override
@@ -41,7 +50,6 @@ public class HistoryFragment extends MonoFragment {
 
         OpenDB openDB = new OpenDB(activity, Config.DATABASE_NAME, Config.VERSION);
         db = new HistoryTableHandler(openDB);
-        openDB.init();
 
         RecyclerView historyRecyclerView = view.findViewById(R.id.historyRecyclerView);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -50,34 +58,19 @@ public class HistoryFragment extends MonoFragment {
         historyRecyclerView.setAdapter(adapter);
 
         List<Stock> itemList = db.fetchAll();
-        Collections.sort(itemList, new Comparator<Stock>() {
-            @Override
-            public int compare(Stock s1, Stock s2) {
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date d1, d2;
-                try {
-                    d1 = dateFormat.parse(s1.getDate());
-                    d2 = dateFormat.parse(s2.getDate());
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                assert d1 != null && d2 != null;
-                return d1.compareTo(d2);
-            }
-        });
+        Collections.sort(itemList, comparator);
 
         adapter.setItemList(itemList);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void handleDataSetUpdate() {
-        List<Stock> stocks = db.fetchAll();
-        Collections.reverse(stocks);
+    public void onUpdate() {
+        List<Stock> itemList = db.fetchAll();
+        Collections.sort(itemList, comparator);
 
         // Display default row from db
-        adapter.setItemList(stocks);
+        adapter.setItemList(itemList);
         adapter.notifyDataSetChanged();
     }
 }

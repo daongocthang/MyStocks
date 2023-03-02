@@ -53,14 +53,15 @@ public class HistoryTableHandler extends SqliteTableHandler<Stock> {
 
     @Override
     public ContentValues convertToContentValues(Stock s) {
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         ContentValues cv = new ContentValues();
         cv.put(COL_SYMBOL, s.getSymbol());
         cv.put(COL_PRICE, s.getPrice());
         cv.put(COL_SHARES, s.getShares());
         cv.put(COL_PROFIT, s.getProfit());
         cv.put(COL_ORDER, s.getOrder().toString());
-        cv.put(COL_DATE, today);
+        //TODO: put date to ContentValues
+        cv.put(COL_DATE, s.getDate());
         return cv;
     }
 

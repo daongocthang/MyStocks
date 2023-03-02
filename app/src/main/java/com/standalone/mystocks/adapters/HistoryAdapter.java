@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
-import com.standalone.mystocks.constant.Config;
-import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
@@ -44,6 +42,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.tvSymbol.setText(s.getSymbol());
         holder.tvPrice.setText(Humanize.doubleComma(s.getPrice()));
         holder.tvShares.setText(Humanize.intComma(s.getShares()));
+        holder.tvDate.setText(s.getDate());
         Stock.OrderType orderType = s.getOrder();
 
         holder.tvOrder.setText(orderType.toString());
@@ -79,6 +78,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         TextView tvShares;
         TextView tvOrder;
         TextView tvProfit;
+        TextView tvDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +88,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvShares = itemView.findViewById(R.id.elHistoryShares);
             tvOrder = itemView.findViewById(R.id.elHistoryOrder);
             tvProfit = itemView.findViewById(R.id.elHistoryProfit);
+            tvDate = itemView.findViewById(R.id.elHistoryDate);
         }
     }
 }

@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
-import com.standalone.mystocks.interfaces.DataSetUpdateListener;
+import com.standalone.mystocks.interfaces.AdapterUpdateListener;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 
 import java.util.List;
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void handleDialogClose(DialogInterface dialog) {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         for (Fragment f : fragmentList) {
-            if (f instanceof DataSetUpdateListener) {
-                ((DataSetUpdateListener) f).handleDataSetUpdate();
+            if (f instanceof AdapterUpdateListener) {
+                ((AdapterUpdateListener) f).onUpdate();
             }
         }
     }

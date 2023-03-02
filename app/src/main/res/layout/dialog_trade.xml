@@ -89,12 +89,39 @@
             android:paddingHorizontal="12dp"
             android:src="@drawable/ic_baseline_cancel" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/grpDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grpShares"
+        android:layout_marginVertical="8dp">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:padding="10dp"
+            android:text="@string/date_format"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <ImageButton
+            android:id="@+id/imDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:contentDescription="@string/hint_calendar"
+            android:paddingHorizontal="12dp"
+            android:src="@drawable/baseline_calendar_month" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/grpShares"
-        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/grpDate"
         android:layout_margin="10dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/submit"
