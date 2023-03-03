@@ -14,16 +14,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
+import com.standalone.mystocks.handlers.CompanyTableHandler;
+import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.AdapterUpdateListener;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
+import com.standalone.mystocks.models.DataStock;
+import com.standalone.mystocks.utils.ApiStock;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
-    TabLayout tabLayout;
-    ViewPager2 viewPager2;
-    ViewPagerAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    public ViewPagerAdapter adapter;
 
 
     @SuppressLint("MissingInflatedId")
@@ -31,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_main);
+
+        createCompanyTable();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -80,5 +87,25 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 ((AdapterUpdateListener) f).onUpdate();
             }
         }
+    }
+
+    private void createCompanyTable() {
+        CompanyTableHandler db = new CompanyTableHandler(Artisan.createOpenDB(this));
+
+        if (db.getCount() > 0) return;
+
+        new ApiStock(this).requestAllStocks(new ApiStock.OnResponseListener<List<DataStock>>() {
+            @Override
+            public void onResponse(List<DataStock> dataStocks) {
+                for (DataStock d : dataStocks) {
+                    db.insert(d);
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 }

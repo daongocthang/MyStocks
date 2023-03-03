@@ -1,28 +1,21 @@
 package com.standalone.mystocks.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.AssetAdapter;
-import com.standalone.mystocks.adapters.helpers.RecyclerItemTouchHelper;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.handlers.AssetTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
-import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.Stock;
 
 import java.util.Collections;
@@ -49,8 +42,7 @@ public class AssetFragment extends MonoFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        OpenDB openDB = new OpenDB(activity, Config.DATABASE_NAME, Config.VERSION);
-        db = new AssetTableHandler(openDB);
+        db = new AssetTableHandler(Artisan.createOpenDB(activity));
 
         RecyclerView assetRecyclerView = view.findViewById(R.id.assetRecyclerView);
         assetRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -65,6 +57,7 @@ public class AssetFragment extends MonoFragment {
         Collections.reverse(stocks);
         adapter.setItemList(stocks);
     }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onUpdate() {

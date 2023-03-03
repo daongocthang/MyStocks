@@ -12,16 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.HistoryAdapter;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.models.Stock;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class HistoryFragment extends MonoFragment {
@@ -48,8 +45,7 @@ public class HistoryFragment extends MonoFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        OpenDB openDB = new OpenDB(activity, Config.DATABASE_NAME, Config.VERSION);
-        db = new HistoryTableHandler(openDB);
+        db = new HistoryTableHandler(Artisan.createOpenDB(activity));
 
         RecyclerView historyRecyclerView = view.findViewById(R.id.historyRecyclerView);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

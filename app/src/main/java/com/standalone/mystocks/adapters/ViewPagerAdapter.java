@@ -1,7 +1,5 @@
 package com.standalone.mystocks.adapters;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

@@ -1,18 +1,15 @@
 package com.standalone.mystocks.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.models.Stock;
@@ -38,8 +35,7 @@ public class ReportFragment extends MonoFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OpenDB openDB = new OpenDB(activity, Config.DATABASE_NAME, Config.VERSION);
-        db = new HistoryTableHandler(openDB);
+        db = new HistoryTableHandler(Artisan.createOpenDB(activity));
     }
 
     @Override

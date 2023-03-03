@@ -2,19 +2,18 @@ package com.standalone.mystocks.handlers.generic;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SqliteTableHandler<T> implements SqliteOpener {
-    protected String dbName;
     protected MetaTable table;
     protected SQLiteDatabase db;
 
-    public SqliteTableHandler(OpenDB openDB, String dbName, MetaTable metaTable) {
+    public SqliteTableHandler(OpenDB openDB, MetaTable metaTable) {
         this.table = metaTable;
-        this.dbName = dbName;
 
         openDB.assign(this);
     }
@@ -28,6 +27,10 @@ public abstract class SqliteTableHandler<T> implements SqliteOpener {
     public abstract T cursorToData(Cursor cursor);
 
     public abstract ContentValues convertToContentValues(T t);
+
+    public int getCount() {
+        return (int) DatabaseUtils.queryNumEntries(db, table.getName());
+    }
 
     public List<T> fetchAll() {
         List<T> res = new ArrayList<>();

@@ -1,10 +1,10 @@
 package com.standalone.mystocks.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,23 +26,27 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.standalone.mystocks.R;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.adapters.DataStockAdapter;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.constant.ErrorMessages;
 import com.standalone.mystocks.handlers.AssetTableHandler;
+import com.standalone.mystocks.handlers.CompanyTableHandler;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
+import com.standalone.mystocks.models.DataStock;
 import com.standalone.mystocks.models.Stock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 public class TradeDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG = TradeDialogFragment.class.getSimpleName();
-    private EditText edSymbol;
+    private AutoCompleteTextView edSymbol;
     private EditText edShares;
     private EditText edPrice;
 
@@ -50,7 +55,6 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
     private Stock referenceStock;
     private AssetTableHandler assetTableHandler;
     private HistoryTableHandler historyTableHandler;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,25 +102,32 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
 
         boolean isUpdate = false;
         final Bundle bundle = getArguments();
-        if (bundle != null) {
+        if (bundle != null && bundle.containsKey("stock")) {
+            Stock s = (Stock) bundle.get("stock");
+            assert s != null;
             btSubmit.setText(Stock.OrderType.SELL.toString());
             btSubmit.setBackgroundResource(R.color.danger_dark);
             isUpdate = true;
-            Stock s = (Stock) bundle.get("stock");
-            assert s != null;
             referenceStock = s;
+            disableEditText(edSymbol);
             edSymbol.setText(s.getSymbol());
             edPrice.setText(String.valueOf(s.getPrice()));
             edShares.setText(String.valueOf(s.getShares()));
         } else {
             btSubmit.setText(Stock.OrderType.BUY.toString());
+
+            // Try add Adapter to AutoCompleteTextView
+            List<DataStock> dataStockList = new CompanyTableHandler(Artisan.createOpenDB(getActivity())).fetchAll();
+            if (dataStockList != null) {
+                edSymbol.setAdapter(new DataStockAdapter(requireActivity(), R.layout.item_suggestion, dataStockList));
+            }
             edSymbol.requestFocus();
         }
 
-        OpenDB openDB = new OpenDB(getActivity(), Config.DATABASE_NAME, Config.VERSION);
+
+        OpenDB openDB = Artisan.createOpenDB(requireActivity());
         assetTableHandler = new AssetTableHandler(openDB);
         historyTableHandler = new HistoryTableHandler(openDB);
-
 
         final boolean finalIsUpdate = isUpdate;
         btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +234,7 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 String[] strDate = new String[3];
                 strDate[0] = String.format(Locale.US, "%02d", year);
-                strDate[1] = String.format(Locale.US, "%02d", month+1);
+                strDate[1] = String.format(Locale.US, "%02d", month + 1);
                 ;
                 strDate[2] = String.format(Locale.US, "%02d", day);
                 ;
@@ -251,6 +262,8 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (!edt.isEnabled()) return;
+
                 btn.setVisibility(s.length() > 0 ? ImageButton.VISIBLE : ImageButton.GONE);
             }
         });
@@ -264,5 +277,13 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
                 imm.showSoftInput(edt, InputMethodManager.SHOW_IMPLICIT);
             }
         });
+    }
+
+    private void disableEditText(EditText editText) {
+        editText.setFocusable(false);
+        editText.setEnabled(false);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
     }
 }

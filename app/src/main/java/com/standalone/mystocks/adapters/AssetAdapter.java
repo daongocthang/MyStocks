@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
-import com.standalone.mystocks.constant.Config;
+import com.standalone.mystocks.constant.Artisan;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
@@ -44,7 +44,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Stock s = itemList.get(position);
-        double stopLoss = s.getPrice() * (1 - Config.STOP_LOSS_RATE);
+        double stopLoss = s.getPrice() * (1 - Artisan.STOP_LOSS_RATE);
 
         final int finalPosition = position;
         holder.btOrder.setOnClickListener(new View.OnClickListener() {

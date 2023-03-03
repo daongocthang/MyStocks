@@ -14,7 +14,6 @@ import java.util.Locale;
 
 public class HistoryTableHandler extends SqliteTableHandler<Stock> {
     static final int VERSION = 1;
-    static final String DB_NAME = "db_mystocks";
     static final String TBL_NAME = "tbl_history";
     static final String COL_ID = "id";
     static final String COL_SYMBOL = "symbol";
@@ -25,7 +24,7 @@ public class HistoryTableHandler extends SqliteTableHandler<Stock> {
     static final String COL_DATE = "date";
 
     public HistoryTableHandler(OpenDB openDB) {
-        super(openDB, DB_NAME, new MetaTable(TBL_NAME,
+        super(openDB, new MetaTable(TBL_NAME,
                 new String[]{
                         COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
                         COL_SYMBOL + " TEXT",

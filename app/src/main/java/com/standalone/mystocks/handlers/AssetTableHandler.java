@@ -9,7 +9,6 @@ import com.standalone.mystocks.handlers.generic.SqliteTableHandler;
 import com.standalone.mystocks.models.Stock;
 
 public class AssetTableHandler extends SqliteTableHandler<Stock> {
-    static final String DB_NAME = "db_mystocks";
     static final String TBL_NAME = "tbl_asset";
     static final String COL_ID = "id";
     static final String COL_SYMBOL = "symbol";
@@ -18,7 +17,7 @@ public class AssetTableHandler extends SqliteTableHandler<Stock> {
 
 
     public AssetTableHandler(OpenDB openDB) {
-        super(openDB, DB_NAME, new MetaTable(TBL_NAME,
+        super(openDB,  new MetaTable(TBL_NAME,
                 new String[]{
                         COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
                         COL_SYMBOL + " TEXT",
