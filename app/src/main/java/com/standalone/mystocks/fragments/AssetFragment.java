@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.AssetAdapter;
-import com.standalone.mystocks.constant.Artisan;
+import com.standalone.mystocks.constant.DatabaseManager;
 import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
 
@@ -42,7 +42,7 @@ public class AssetFragment extends MonoFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        db = new AssetTableHandler(Artisan.createOpenDB(activity));
+        db = new AssetTableHandler(DatabaseManager.getDatabase(activity));
 
         RecyclerView assetRecyclerView = view.findViewById(R.id.assetRecyclerView);
         assetRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

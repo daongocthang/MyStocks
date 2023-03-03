@@ -3,6 +3,7 @@ package com.standalone.mystocks.handlers;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.handlers.generic.SqliteTableHandler;
@@ -16,8 +17,8 @@ public class AssetTableHandler extends SqliteTableHandler<Stock> {
     static final String COL_SHARES = "shares";
 
 
-    public AssetTableHandler(OpenDB openDB) {
-        super(openDB,  new MetaTable(TBL_NAME,
+    public AssetTableHandler(SQLiteDatabase db) {
+        super(db, new MetaTable(TBL_NAME,
                 new String[]{
                         COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
                         COL_SYMBOL + " TEXT",

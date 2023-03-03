@@ -3,6 +3,7 @@ package com.standalone.mystocks.handlers;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.handlers.generic.SqliteTableHandler;
@@ -23,8 +24,8 @@ public class HistoryTableHandler extends SqliteTableHandler<Stock> {
     static final String COL_ORDER = "order_type";
     static final String COL_DATE = "date";
 
-    public HistoryTableHandler(OpenDB openDB) {
-        super(openDB, new MetaTable(TBL_NAME,
+    public HistoryTableHandler(SQLiteDatabase db) {
+        super(db, new MetaTable(TBL_NAME,
                 new String[]{
                         COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
                         COL_SYMBOL + " TEXT",

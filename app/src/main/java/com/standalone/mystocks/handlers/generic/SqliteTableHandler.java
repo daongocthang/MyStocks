@@ -8,18 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SqliteTableHandler<T> implements SqliteOpener {
+public abstract class SqliteTableHandler<T> {
     protected MetaTable table;
-    protected SQLiteDatabase db;
+    protected final SQLiteDatabase db;
 
-    public SqliteTableHandler(OpenDB openDB, MetaTable metaTable) {
+    public SqliteTableHandler(SQLiteDatabase db, MetaTable metaTable) {
         this.table = metaTable;
-
-        openDB.assign(this);
-    }
-
-    @Override
-    public void open(SQLiteDatabase db) {
         this.db = db;
         db.execSQL(table.getCreateTableStmt());
     }

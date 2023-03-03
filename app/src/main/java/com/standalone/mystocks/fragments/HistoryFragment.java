@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.HistoryAdapter;
-import com.standalone.mystocks.constant.Artisan;
+import com.standalone.mystocks.constant.DatabaseManager;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.models.Stock;
 
 import java.util.Collections;
@@ -45,7 +44,7 @@ public class HistoryFragment extends MonoFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        db = new HistoryTableHandler(Artisan.createOpenDB(activity));
+        db = new HistoryTableHandler(DatabaseManager.getDatabase(activity));
 
         RecyclerView historyRecyclerView = view.findViewById(R.id.historyRecyclerView);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

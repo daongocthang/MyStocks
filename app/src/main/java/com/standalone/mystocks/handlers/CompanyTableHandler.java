@@ -3,6 +3,7 @@ package com.standalone.mystocks.handlers;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.handlers.generic.SqliteTableHandler;
@@ -14,8 +15,8 @@ public class CompanyTableHandler extends SqliteTableHandler<DataStock> {
     static final String COL_SYMBOL = "symbol";
     static final String COL_NAME = "short_name";
 
-    public CompanyTableHandler(OpenDB openDB) {
-        super(openDB, new MetaTable(TBL_NAME, new String[]{
+    public CompanyTableHandler(SQLiteDatabase db) {
+        super(db, new MetaTable(TBL_NAME, new String[]{
                 COL_ID + " TEXT PRIMARY KEY",
                 COL_SYMBOL + " TEXT",
                 COL_NAME + " TEXT",

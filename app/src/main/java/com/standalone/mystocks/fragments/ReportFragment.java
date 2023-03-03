@@ -9,9 +9,8 @@ import androidx.annotation.Nullable;
 
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
-import com.standalone.mystocks.constant.Artisan;
+import com.standalone.mystocks.constant.DatabaseManager;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
@@ -35,7 +34,7 @@ public class ReportFragment extends MonoFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new HistoryTableHandler(Artisan.createOpenDB(activity));
+        db = new HistoryTableHandler(DatabaseManager.getDatabase(activity));
     }
 
     @Override

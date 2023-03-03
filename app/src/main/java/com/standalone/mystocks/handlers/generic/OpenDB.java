@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+
 public class OpenDB extends SQLiteOpenHelper {
     private final SQLiteDatabase db;
 
@@ -29,8 +31,9 @@ public class OpenDB extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void assign(SqliteOpener opener) {
-        opener.open(db);
+    @NonNull
+    public SQLiteDatabase getDatabase() {
+        return db;
     }
 
     @SuppressLint("Range")

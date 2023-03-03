@@ -14,10 +14,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
-import com.standalone.mystocks.constant.Artisan;
+import com.standalone.mystocks.constant.DatabaseManager;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.CompanyTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.AdapterUpdateListener;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.DataStock;
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
     private void createCompanyTable() {
-        CompanyTableHandler db = new CompanyTableHandler(Artisan.createOpenDB(this));
+        CompanyTableHandler db = new CompanyTableHandler(DatabaseManager.getDatabase(this));
 
         if (db.getCount() > 0) return;
 

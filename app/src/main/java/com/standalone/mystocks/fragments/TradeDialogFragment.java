@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,12 +28,11 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.DataStockAdapter;
-import com.standalone.mystocks.constant.Artisan;
+import com.standalone.mystocks.constant.DatabaseManager;
 import com.standalone.mystocks.constant.ErrorMessages;
 import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.handlers.CompanyTableHandler;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
-import com.standalone.mystocks.handlers.generic.OpenDB;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.DataStock;
 import com.standalone.mystocks.models.Stock;
@@ -82,6 +82,8 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
         edShares = view.findViewById(R.id.edShares);
         tvDate = view.findViewById(R.id.tvDate);
 
+        SQLiteDatabase db = DatabaseManager.getDatabase(getContext());
+
         Button btSubmit = view.findViewById(R.id.btSubmit);
         ImageButton btDatePicker = view.findViewById(R.id.imDatePicker);
 
@@ -117,17 +119,15 @@ public class TradeDialogFragment extends BottomSheetDialogFragment {
             btSubmit.setText(Stock.OrderType.BUY.toString());
 
             // Try add Adapter to AutoCompleteTextView
-            List<DataStock> dataStockList = new CompanyTableHandler(Artisan.createOpenDB(getActivity())).fetchAll();
+            List<DataStock> dataStockList = new CompanyTableHandler(db).fetchAll();
             if (dataStockList != null) {
                 edSymbol.setAdapter(new DataStockAdapter(requireActivity(), R.layout.item_suggestion, dataStockList));
             }
             edSymbol.requestFocus();
         }
 
-
-        OpenDB openDB = Artisan.createOpenDB(requireActivity());
-        assetTableHandler = new AssetTableHandler(openDB);
-        historyTableHandler = new HistoryTableHandler(openDB);
+        assetTableHandler = new AssetTableHandler(db);
+        historyTableHandler = new HistoryTableHandler(db);
 
         final boolean finalIsUpdate = isUpdate;
         btSubmit.setOnClickListener(new View.OnClickListener() {

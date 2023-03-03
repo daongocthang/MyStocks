@@ -10,17 +10,12 @@ import com.standalone.mystocks.fragments.AssetFragment;
 import com.standalone.mystocks.fragments.HistoryFragment;
 import com.standalone.mystocks.fragments.ReportFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ViewPagerAdapter extends FragmentStateAdapter {
     private final MainActivity activity;
-    private List<Fragment> itemList;
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
         this.activity = (MainActivity) fragmentActivity;
-        itemList = new ArrayList<>();
     }
 
     @NonNull
