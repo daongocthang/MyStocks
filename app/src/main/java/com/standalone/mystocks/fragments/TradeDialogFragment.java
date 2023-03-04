@@ -28,7 +28,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.DataStockAdapter;
-import com.standalone.mystocks.constant.DatabaseManager;
+import com.standalone.mystocks.handlers.generic.DatabaseManager;
 import com.standalone.mystocks.constant.ErrorMessages;
 import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.handlers.CompanyTableHandler;

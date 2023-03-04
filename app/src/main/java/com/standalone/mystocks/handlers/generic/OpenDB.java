@@ -9,16 +9,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 
 public class OpenDB extends SQLiteOpenHelper {
-    private final SQLiteDatabase db;
 
     public OpenDB(Context context, String dbName, int version) {
         super(context, dbName, null, version);
-        db = getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
     }
 
     @Override
@@ -33,7 +30,7 @@ public class OpenDB extends SQLiteOpenHelper {
 
     @NonNull
     public SQLiteDatabase getDatabase() {
-        return db;
+        return getWritableDatabase();
     }
 
     @SuppressLint("Range")
