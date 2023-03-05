@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_main);
 
-        createCompanyTable();
+        loadCompanyTable();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,13 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        viewPager2.setCurrentItem(0);
+    }
+
+    @Override
     public void handleDialogClose(DialogInterface dialog) {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         for (Fragment f : fragmentList) {
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         }
     }
 
-    private void createCompanyTable() {
+    private void loadCompanyTable() {
         CompanyTableHandler db = new CompanyTableHandler(DatabaseManager.getDatabase(this));
 
         if (db.getCount() > 0) return;
