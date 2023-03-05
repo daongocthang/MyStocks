@@ -1,5 +1,6 @@
 package com.standalone.mystocks.handlers.generic;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -8,17 +9,32 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class DatabaseManager {
-    private static OpenDB instance;
 
-    public static SQLiteDatabase getDatabase(Context context) {
-        if (instance == null) {
+    @SuppressLint("StaticFieldLeak")
+    private static OpenDB sqliteOpenInstance;
+
+    private static OpenDB getSqliteOpenInstance(Context context) {
+        if (sqliteOpenInstance == null) {
             try {
-                instance = new OpenDB(context, getProperty(context, "database_name"), Integer.parseInt(getProperty(context, "database_version")));
+                sqliteOpenInstance = new OpenDB(context, getProperty(context, "database_name"), Integer.parseInt(getProperty(context, "database_version")));
             } catch (IOException | NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-        return instance.getDatabase();
+
+        return sqliteOpenInstance;
+    }
+
+    public static SQLiteDatabase getDatabase(Context context) {
+        return getSqliteOpenInstance(context).getDatabase();
+    }
+
+    public static void importDatabase(Context context, String filename) {
+        getSqliteOpenInstance(context).restore(filename);
+    }
+
+    public static void exportDatabase(Context context, String filename) {
+        getSqliteOpenInstance(context).backup(filename);
     }
 
     private static String getProperty(Context context, String key) throws IOException {
