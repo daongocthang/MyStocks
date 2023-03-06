@@ -14,7 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
-import com.standalone.mystocks.handlers.generic.DatabaseManager;
+import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.CompanyTableHandler;
 import com.standalone.mystocks.interfaces.AdapterUpdateListener;

@@ -1,4 +1,4 @@
-package com.standalone.mystocks.handlers.generic;
+package com.standalone.mystocks.handlers.dbase;
 
 import android.content.ContentValues;
 import android.database.Cursor;

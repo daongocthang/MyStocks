@@ -1,18 +1,12 @@
-package com.standalone.mystocks.handlers.generic;
+package com.standalone.mystocks.handlers.dbase;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 public class OpenDB extends SQLiteOpenHelper {
     private final Context context;

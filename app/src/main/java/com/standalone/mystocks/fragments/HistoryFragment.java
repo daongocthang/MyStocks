@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.HistoryAdapter;
-import com.standalone.mystocks.handlers.generic.DatabaseManager;
+import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
 

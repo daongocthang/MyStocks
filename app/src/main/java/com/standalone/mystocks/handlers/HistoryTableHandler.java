@@ -5,13 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.standalone.mystocks.handlers.generic.OpenDB;
-import com.standalone.mystocks.handlers.generic.SqliteTableHandler;
+import com.standalone.mystocks.handlers.dbase.SqliteTableHandler;
 import com.standalone.mystocks.models.Stock;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class HistoryTableHandler extends SqliteTableHandler<Stock> {
     static final int VERSION = 1;

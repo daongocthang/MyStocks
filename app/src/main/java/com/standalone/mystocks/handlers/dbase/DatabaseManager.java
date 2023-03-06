@@ -1,4 +1,4 @@
-package com.standalone.mystocks.handlers.generic;
+package com.standalone.mystocks.handlers.dbase;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
