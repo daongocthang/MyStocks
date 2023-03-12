@@ -46,11 +46,11 @@ public class ReportFragment extends MonoFragment {
         tvLoss = view.findViewById(R.id.tvReportLoss);
         tvGrossProfit = view.findViewById(R.id.tvReportGrossProfit);
 
-        onUpdate();
+        update();
     }
 
     @Override
-    public void onUpdate() {
+    public void update() {
         List<Stock> itemList = db.fetchAll();
         int win = 0;
         int count = 0;
@@ -74,5 +74,10 @@ public class ReportFragment extends MonoFragment {
             tvLoss.setText(Humanize.doubleComma(-1 * loss));
             tvGrossProfit.setText(Humanize.doubleComma(gain + loss));
         }
+    }
+
+    @Override
+    public void filter(CharSequence constraint) {
+
     }
 }

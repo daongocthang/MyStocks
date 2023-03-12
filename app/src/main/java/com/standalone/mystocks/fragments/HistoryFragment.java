@@ -2,7 +2,11 @@ package com.standalone.mystocks.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,17 +20,18 @@ import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HistoryFragment extends MonoFragment {
+public class HistoryFragment extends MonoFragment implements Filterable {
     private final MainActivity activity;
 
     private HistoryTableHandler db;
     private HistoryAdapter adapter;
 
-    private Comparator<Stock> comparator;
+    private final Comparator<Stock> comparator;
 
     public HistoryFragment(MainActivity activity) {
         super(R.layout.fragment_history);
@@ -60,12 +65,51 @@ public class HistoryFragment extends MonoFragment {
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onUpdate() {
+    public void update() {
         List<Stock> itemList = db.fetchAll();
         Collections.sort(itemList, comparator);
 
         // Display default row from db
         adapter.setItemList(itemList);
-        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void filter(CharSequence constraint) {
+        getFilter().filter(constraint);
+    }
+
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<Stock> filteredList;
+                List<Stock> itemList = db.fetchAll();
+                String keywords = constraint.toString();
+                if (TextUtils.isEmpty(keywords)) {
+                    filteredList = itemList;
+                } else {
+                    filteredList = new ArrayList<>();
+                    for (Stock s : itemList) {
+                        if (s.getSymbol().toLowerCase().contains(keywords.toLowerCase())) {
+                            filteredList.add(s);
+                        }
+                    }
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                @SuppressWarnings("unchecked")
+                List<Stock> filteredList = (List<Stock>) results.values;
+                adapter.setItemList(filteredList);
+            }
+        };
     }
 }

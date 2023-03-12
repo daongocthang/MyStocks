@@ -3,7 +3,9 @@ package com.standalone.mystocks.models;
 import java.io.Serializable;
 
 public class Stock implements Serializable {
-    public static enum OrderType {BUY, SELL}
+    public enum OrderType {
+        BUY, SELL
+    }
 
     int id;
     String symbol;

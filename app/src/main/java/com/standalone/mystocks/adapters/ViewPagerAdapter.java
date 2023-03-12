@@ -10,6 +10,9 @@ import com.standalone.mystocks.fragments.AssetFragment;
 import com.standalone.mystocks.fragments.HistoryFragment;
 import com.standalone.mystocks.fragments.ReportFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewPagerAdapter extends FragmentStateAdapter {
     private final MainActivity activity;
 
@@ -34,5 +37,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 3;
+    }
+
+    public Fragment getItem(int pos) {
+        return activity.getSupportFragmentManager().findFragmentByTag("f" + getItemId(pos));
     }
 }

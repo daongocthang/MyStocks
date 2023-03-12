@@ -19,6 +19,7 @@ import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> {

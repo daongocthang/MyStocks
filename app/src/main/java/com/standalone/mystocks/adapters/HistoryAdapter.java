@@ -15,6 +15,7 @@ import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
