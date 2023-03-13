@@ -3,27 +3,24 @@ package com.standalone.mystocks.activities;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.adapters.ViewPagerAdapter;
-import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.CompanyTableHandler;
+import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.interfaces.AdapterController;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.DataStock;
@@ -31,21 +28,18 @@ import com.standalone.mystocks.utils.ApiStock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-    public ViewPagerAdapter viewPagerAdapter;
     private ActionBar actionBar;
-    private AdapterController currentAdapterController;
-
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_main);
+
         actionBar = getSupportActionBar();
 
         loadCompanyTable();
@@ -60,14 +54,13 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.pager);
-        viewPagerAdapter = new ViewPagerAdapter(this);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager2.setOffscreenPageLimit(2);
         viewPager2.setAdapter(viewPagerAdapter);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-
                 if (tab.getPosition() < 2) {
                     actionBar.show();
                 } else {

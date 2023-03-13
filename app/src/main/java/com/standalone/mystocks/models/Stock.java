@@ -1,8 +1,15 @@
 package com.standalone.mystocks.models;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class Stock implements Serializable {
+public class Stock implements Serializable, Comparable<Stock> {
+
+    @Override
+    public int compareTo(Stock other) {
+        return other.getDate().compareTo(this.getDate());
+    }
+
     public enum OrderType {
         BUY, SELL
     }

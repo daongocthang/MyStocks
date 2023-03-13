@@ -20,6 +20,7 @@ import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> {
@@ -73,6 +74,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
 
     @SuppressLint("NotifyDataSetChanged")
     public void setItemList(List<Stock> itemList) {
+        Collections.reverse(itemList);
         this.itemList = itemList;
         notifyDataSetChanged();
     }

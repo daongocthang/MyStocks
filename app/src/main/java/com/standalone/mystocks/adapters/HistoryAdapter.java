@@ -16,6 +16,7 @@ import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
@@ -47,13 +48,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         Stock.OrderType orderType = s.getOrder();
 
         holder.tvOrder.setText(orderType.toString());
+        int colorPrimary = activity.getResources().getColor(R.color.primary);
+        int colorDanger = activity.getResources().getColor(R.color.danger_dark);
         if (orderType.equals(Stock.OrderType.BUY)) {
-            holder.tvOrder.setTextColor(R.color.primary);
+            holder.tvOrder.setTextColor(colorPrimary);
             holder.tvProfit.setText("");
         } else {
+            holder.tvOrder.setTextColor(colorDanger);
             holder.tvProfit.setText(Humanize.doubleComma(s.getProfit()));
             if (s.getProfit() > 0) {
-                holder.tvProfit.setTextColor(R.color.primary);
+                holder.tvProfit.setTextColor(colorPrimary);
+            } else {
+                holder.tvProfit.setTextColor(colorDanger);
             }
         }
     }
@@ -69,6 +75,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @SuppressLint("NotifyDataSetChanged")
     public void setItemList(List<Stock> itemList) {
+        Collections.sort(itemList);
         this.itemList = itemList;
         notifyDataSetChanged();
     }

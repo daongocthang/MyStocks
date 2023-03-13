@@ -3,7 +3,6 @@ package com.standalone.mystocks.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -16,33 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.HistoryAdapter;
-import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.handlers.HistoryTableHandler;
+import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.models.Stock;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class HistoryFragment extends MonoFragment implements Filterable {
     private final MainActivity activity;
-
     private HistoryTableHandler db;
     private HistoryAdapter adapter;
-
-    private final Comparator<Stock> comparator;
 
     public HistoryFragment(MainActivity activity) {
         super(R.layout.fragment_history);
         this.activity = activity;
-
-        comparator = new Comparator<Stock>() {
-            @Override
-            public int compare(Stock s1, Stock s2) {
-                return s2.getDate().compareTo(s1.getDate());
-            }
-        };
     }
 
     @Override
@@ -58,8 +46,6 @@ public class HistoryFragment extends MonoFragment implements Filterable {
         historyRecyclerView.setAdapter(adapter);
 
         List<Stock> itemList = db.fetchAll();
-        Collections.sort(itemList, comparator);
-
         adapter.setItemList(itemList);
     }
 
@@ -67,8 +53,6 @@ public class HistoryFragment extends MonoFragment implements Filterable {
     @Override
     public void update() {
         List<Stock> itemList = db.fetchAll();
-        Collections.sort(itemList, comparator);
-
         // Display default row from db
         adapter.setItemList(itemList);
     }

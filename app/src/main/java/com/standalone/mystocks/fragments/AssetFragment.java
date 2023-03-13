@@ -58,7 +58,6 @@ public class AssetFragment extends MonoFragment implements Filterable {
 //        itemTouchHelper.attachToRecyclerView(assetRecyclerView);
 
         List<Stock> stocks = db.fetchAll();
-        Collections.reverse(stocks);
         adapter.setItemList(stocks);
     }
 
@@ -66,8 +65,6 @@ public class AssetFragment extends MonoFragment implements Filterable {
     @Override
     public void update() {
         List<Stock> stocks = db.fetchAll();
-        Collections.reverse(stocks);
-
         // Display default row from db
         adapter.setItemList(stocks);
     }
