@@ -21,7 +21,7 @@ import com.standalone.mystocks.adapters.ViewPagerAdapter;
 import com.standalone.mystocks.fragments.TradeDialogFragment;
 import com.standalone.mystocks.handlers.CompanyTableHandler;
 import com.standalone.mystocks.handlers.dbase.DatabaseManager;
-import com.standalone.mystocks.interfaces.AdapterController;
+import com.standalone.mystocks.interfaces.FragmentController;
 import com.standalone.mystocks.interfaces.DialogCloseListener;
 import com.standalone.mystocks.models.DataStock;
 import com.standalone.mystocks.utils.ApiStock;
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_main);
-
         actionBar = getSupportActionBar();
 
         loadCompanyTable();
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             @Override
             public boolean onQueryTextChange(String newText) {
                 // TODO: should use a thread
-                for (AdapterController ac : getAdapterControllers()) {
+                for (FragmentController ac : getAdapterControllers()) {
                     ac.filter(newText);
                 }
                 return false;
@@ -118,17 +117,17 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        for (AdapterController ac : getAdapterControllers()) {
+        for (FragmentController ac : getAdapterControllers()) {
             ac.update();
         }
     }
 
-    private List<AdapterController> getAdapterControllers() {
+    private List<FragmentController> getAdapterControllers() {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
-        List<AdapterController> results = new ArrayList<>();
+        List<FragmentController> results = new ArrayList<>();
         for (Fragment f : fragmentList) {
-            if (f instanceof AdapterController) {
-                results.add((AdapterController) f);
+            if (f instanceof FragmentController) {
+                results.add((FragmentController) f);
             }
         }
 

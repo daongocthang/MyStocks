@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HistoryFragment extends MonoFragment implements Filterable {
+public class HistoryFragment extends MonoFragment<Stock> {
     private final MainActivity activity;
     private HistoryTableHandler db;
     private HistoryAdapter adapter;
@@ -59,41 +59,6 @@ public class HistoryFragment extends MonoFragment implements Filterable {
 
     @Override
     public void filter(CharSequence constraint) {
-        getFilter().filter(constraint);
-    }
-
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<Stock> filteredList;
-                List<Stock> itemList = db.fetchAll();
-                String keywords = constraint.toString();
-                if (TextUtils.isEmpty(keywords)) {
-                    filteredList = itemList;
-                } else {
-                    filteredList = new ArrayList<>();
-                    for (Stock s : itemList) {
-                        if (s.getSymbol().toLowerCase().contains(keywords.toLowerCase())) {
-                            filteredList.add(s);
-                        }
-                    }
-                }
-
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                @SuppressWarnings("unchecked")
-                List<Stock> filteredList = (List<Stock>) results.values;
-                adapter.setItemList(filteredList);
-            }
-        };
+        adapter.getFilter().filter(constraint);
     }
 }

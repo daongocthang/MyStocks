@@ -1,6 +1,7 @@
 package com.standalone.mystocks.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,9 +15,10 @@ import com.standalone.mystocks.handlers.HistoryTableHandler;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ReportFragment extends MonoFragment {
+public class ReportFragment extends MonoFragment<Stock> {
     private final MainActivity activity;
     private TextView tvTrading;
     private TextView tvWinRate;
@@ -51,7 +53,7 @@ public class ReportFragment extends MonoFragment {
 
     @Override
     public void update() {
-        List<Stock> itemList = db.fetchAll();
+        itemList = db.fetchAll();
         int win = 0;
         int count = 0;
         double gain = 0;
@@ -78,6 +80,6 @@ public class ReportFragment extends MonoFragment {
 
     @Override
     public void filter(CharSequence constraint) {
-
     }
+
 }

@@ -2,12 +2,9 @@ package com.standalone.mystocks.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,15 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.standalone.mystocks.R;
 import com.standalone.mystocks.activities.MainActivity;
 import com.standalone.mystocks.adapters.AssetAdapter;
-import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.handlers.AssetTableHandler;
+import com.standalone.mystocks.handlers.dbase.DatabaseManager;
 import com.standalone.mystocks.models.Stock;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class AssetFragment extends MonoFragment implements Filterable {
+public class AssetFragment extends MonoFragment<Stock> {
     private AssetTableHandler db;
     private AssetAdapter adapter;
     private final MainActivity activity;
@@ -71,40 +66,6 @@ public class AssetFragment extends MonoFragment implements Filterable {
 
     @Override
     public void filter(CharSequence constraint) {
-        getFilter().filter(constraint);
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<Stock> filteredList;
-                List<Stock> itemList = db.fetchAll();
-                String keywords = constraint.toString();
-                if (TextUtils.isEmpty(keywords)) {
-                    filteredList = itemList;
-                } else {
-                    filteredList = new ArrayList<>();
-                    for (Stock s : itemList) {
-                        if (s.getSymbol().toLowerCase().contains(keywords.toLowerCase())) {
-                            filteredList.add(s);
-                        }
-                    }
-                }
-
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                @SuppressWarnings("unchecked")
-                List<Stock> filteredList = (List<Stock>) results.values;
-                adapter.setItemList(filteredList);
-            }
-        };
+        adapter.getFilter().filter(constraint);
     }
 }

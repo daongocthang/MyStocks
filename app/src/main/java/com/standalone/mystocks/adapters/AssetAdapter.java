@@ -3,7 +3,6 @@ package com.standalone.mystocks.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -19,13 +18,11 @@ import com.standalone.mystocks.handlers.AssetTableHandler;
 import com.standalone.mystocks.models.Stock;
 import com.standalone.mystocks.utils.Humanize;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> {
+public class AssetAdapter extends AdapterFilterable<Stock, AssetAdapter.ViewHolder> {
 
-    private List<Stock> itemList;
     private final MainActivity activity;
     private final AssetTableHandler db;
 
@@ -37,9 +34,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_asset, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(instantiateItemView(R.layout.item_asset, parent));
     }
 
     @Override
@@ -72,11 +67,18 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         return activity;
     }
 
+    @Override
     @SuppressLint("NotifyDataSetChanged")
     public void setItemList(List<Stock> itemList) {
         Collections.reverse(itemList);
         this.itemList = itemList;
         notifyDataSetChanged();
+    }
+
+    @Override
+    protected boolean applyFilterCriteria(CharSequence constraint, Stock stock) {
+        String charString = constraint.toString();
+        return stock.getSymbol().toLowerCase().contains(charString.toLowerCase());
     }
 
     public void removeItem(int pos) {
@@ -95,6 +97,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         fragment.setArguments(bundle);
         fragment.show(activity.getSupportFragmentManager(), TradeDialogFragment.TAG);
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvSymbol;

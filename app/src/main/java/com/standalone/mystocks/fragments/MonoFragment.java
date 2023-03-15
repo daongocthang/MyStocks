@@ -10,14 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.standalone.mystocks.interfaces.AdapterController;
+import com.standalone.mystocks.interfaces.FragmentController;
 
-public abstract class MonoFragment extends Fragment implements AdapterController {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class MonoFragment<T> extends Fragment implements FragmentController {
 
     protected final int resource;
+    protected List<T> itemList;
 
-    public MonoFragment(@LayoutRes int resource) {
-        this.resource = resource;
+    public MonoFragment(@LayoutRes int resId) {
+        this.resource = resId;
+        this.itemList = new ArrayList<>();
     }
 
     @Nullable

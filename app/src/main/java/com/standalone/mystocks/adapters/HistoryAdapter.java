@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class HistoryAdapter extends AdapterFilterable<Stock, HistoryAdapter.ViewHolder> {
 
-    private List<Stock> itemList;
     private final MainActivity activity;
 
     public HistoryAdapter(MainActivity activity) {
@@ -31,9 +30,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_history, parent, false);
-        return new HistoryAdapter.ViewHolder(itemView);
+        return new HistoryAdapter.ViewHolder(instantiateItemView(R.layout.item_history, parent));
     }
 
     @SuppressLint("ResourceAsColor")
@@ -78,6 +75,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         Collections.sort(itemList);
         this.itemList = itemList;
         notifyDataSetChanged();
+    }
+
+    @Override
+    protected boolean applyFilterCriteria(CharSequence constraint, Stock stock) {
+        String charString = constraint.toString();
+        return stock.getSymbol().toLowerCase().contains(charString.toLowerCase());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
