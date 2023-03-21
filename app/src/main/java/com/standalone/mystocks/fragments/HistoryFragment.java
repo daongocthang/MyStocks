@@ -59,6 +59,7 @@ public class HistoryFragment extends MonoFragment<Stock> {
 
     @Override
     public void filter(CharSequence constraint) {
+        adapter.setItemList(db.fetchAll());
         adapter.getFilter().filter(constraint);
     }
 }
